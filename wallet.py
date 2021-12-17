@@ -1,5 +1,4 @@
 import datetime
-import transaction
 
 class InsufficientAmount(Exception):
     pass
@@ -24,13 +23,3 @@ class Wallet():
 
         
 
-
-    def deposit(self,funds):
-        self.balance += funds
-        self.transactions.append({'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':funds, 'balance': self.balance})
-
-    def withdraw(self,funds):
-        if self.balance < funds:
-            raise InsufficientAmount("Withdrawal for {} exceeds Wallet Balance".format(funds))
-        self.balance -= funds
-        self.transactions.append({'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':funds, 'balance': self.balance})
