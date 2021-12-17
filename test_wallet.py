@@ -40,5 +40,5 @@ def test_wallet_deposit():
 def test_wallet_transaction():
     wallet = Wallet(100)
     wallet.deposit(10)
-    assert wallet.transactions[0] == {'date':datetime.datetime(2023,1,10),'amount':10,'balance':110}
+    assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':110}
 
