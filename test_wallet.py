@@ -1,6 +1,6 @@
 import datetime
 import pytest
-from wallet import Wallet
+from wallet import Wallet, InsufficientAmount
 # from freezegun import freeze_time
 
 
