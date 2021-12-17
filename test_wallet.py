@@ -33,23 +33,23 @@ def test_wallet_intial_amount():
 
 def test_wallet_deposit():
     wallet = Wallet(100)
-    wallet.deposit(10)
+    wallet.transaction("Deposit",10)
     assert wallet.balance == 110
 
 #@freeze_time("2023-01-10")
 def test_wallet_transaction():
     wallet = Wallet(100)
-    wallet.deposit(10)
-    assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':110}
+    wallet.transaction("Deposit",10)
+    assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':110,'type':'Deposit'}
 
 def test_wallet_withdraw():
     wallet = Wallet(100)
-    wallet.withdraw(20)
+    wallet.transaction("Withdraw",20)
     assert wallet.balance == 80
 
 def test_wallet_insufficient_funds():
     wallet = Wallet()    
     with pytest.raises(InsufficientAmount):
-        wallet.withdraw(100)
+        wallet.transaction("Withdraw",100)
 
 
