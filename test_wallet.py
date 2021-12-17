@@ -42,3 +42,14 @@ def test_wallet_transaction():
     wallet.deposit(10)
     assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':110}
 
+def test_wallet_withdraw():
+    wallet = Wallet(100)
+    wallet.withdraw(20)
+    assert wallet.balance == 80
+
+def test_wallet_insufficient_funds():
+    wallet = Wallet()    
+    with pytest.raises(InsufficientAmount):
+        wallet.withdraw(100)
+
+
