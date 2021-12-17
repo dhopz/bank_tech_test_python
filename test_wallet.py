@@ -1,5 +1,23 @@
+import datetime
 import pytest
 from wallet import Wallet
+# from freezegun import freeze_time
+
+
+FAKE_TIME = datetime.datetime(2023, 1, 10)
+
+@pytest.fixture
+def patch_datetime_now(monkeypatch):
+
+    class mydatetime:
+        @classmethod
+        def now(cls):
+            return FAKE_TIME
+
+    monkeypatch.setattr(datetime, 'datetime', mydatetime)
+
+def test_patch_datetime(patch_datetime_now):
+    assert datetime.datetime.now() == FAKE_TIME
 
 def test_wallet_set_up():
     wallet = Wallet()
@@ -13,9 +31,14 @@ def test_wallet_intial_amount():
     wallet = Wallet(100)
     assert wallet.balance == 100
 
-def test_wallet_depost():
+def test_wallet_deposit():
     wallet = Wallet(100)
     wallet.deposit(10)
     assert wallet.balance == 110
 
-    
+#@freeze_time("2023-01-10")
+def test_wallet_transaction():
+    wallet = Wallet(100)
+    wallet.deposit(10)
+    assert wallet.transactions[0] == {'date':datetime.datetime(2023,1,10),'amount':10,'balance':110}
+
