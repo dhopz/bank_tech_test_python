@@ -16,31 +16,34 @@ def patch_datetime_now(monkeypatch):
 
     monkeypatch.setattr(datetime, 'datetime', mydatetime)
 
-def test_patch_datetime(patch_datetime_now):
-    assert datetime.datetime.now() == FAKE_TIME
+@pytest.fixture
+def empty_wallet():
+    '''Returns a Wallet instance with a zero balance'''
+    return Wallet()
 
-def test_wallet_set_up():
-    wallet = Wallet()
-    assert wallet.balance == 0, "creates a new wallet"
+@pytest.fixture
+def wallet():
+    '''Returns a Wallet instance with a balance of 20'''
+    return Wallet(20)
 
-def test_transactions_empty():
-    wallet = Wallet()
+def test_wallet_set_up_fixture(empty_wallet):
+    assert empty_wallet.balance == 0, "creates a new wallet"
+
+def test_wallet_set_up(empty_wallet):
+    assert empty_wallet.balance == 0, "creates a new wallet"
+
+def test_transactions_empty(wallet):
     assert wallet.transactions == []
+    assert wallet.balance == 20, "creates a new wallet"
 
-def test_wallet_intial_amount():
-    wallet = Wallet(100)
-    assert wallet.balance == 100
-
-def test_wallet_deposit():
-    wallet = Wallet(100)
+def test_wallet_deposit(wallet):
     wallet.transaction("Deposit",10)
-    assert wallet.balance == 110
+    assert wallet.balance == 30
 
 #@freeze_time("2023-01-10")
-def test_wallet_transaction():
-    wallet = Wallet(100)
+def test_wallet_transaction(wallet):
     wallet.transaction("Deposit",10)
-    assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':110,'type':'Deposit'}
+    assert wallet.transactions[0] == {'date':datetime.datetime.now().strftime('%Y-%m-%d'),'amount':10,'balance':30,'type':'Deposit'}
 
 def test_wallet_withdraw():
     wallet = Wallet(100)
